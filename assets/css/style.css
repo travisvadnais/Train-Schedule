@@ -1,3 +1,30 @@
-.text-center {
-    color: blue;
+
+
+/* table formatting */
+table, form {
+    border: 2px double grey;
 }
+
+form {
+    margin-bottom: 100px;
+}
+
+th, tr td {
+    text-align: center;
+}
+
+#train_name, #destination, #first_train, #frequency, label {
+    width: 96%;
+    margin-left: 2%;
+}
+
+label#train_name {
+    margin-top: 20px;
+}
+
+button#add_train {
+    margin-left: 2%;
+    margin-bottom: 20px;
+}
+
+

@@ -6,27 +6,106 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Sample Page with Bootstrap and jQuery</title>
+  <title>Train Schedule</title>
 
   <meta name="author" content="">
   <meta name="description" content="">
-
 
   <!-- Bootstrap latest compiled and minified CSS -->
   <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
   
-  
-  <!-- Firebase reference --> 
-
+  <!-- Firebase reference -->
+  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
 </head> 
 
 <body>
-  <div class="jumbotron">Jumbotron will prove bootstrap is connected</div>
-  <p class="text-center">
-    this text should be blue to show that CSS is hooked up
-  </p>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="jumbotron">
+        blahblahtext here maybe some H1s or something
+      </div>      
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col table-responsive-sm">
+      <table class="table table-striped table-hover table-sm">
+        <thead class="thead-light">
+          <tr>
+            <th id="train_schedule">Train Schedule</th>
+          </tr>
+        </thead>
+        <thead>
+          <tr>
+            <th scope="col">Train Name</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Frequency (min)</th>
+            <th scope="col">Next Arrival</th>
+            <th scope="col">Minutes Away</th>
+          </tr>
+        </thead>
+        <tbody id="train_list">
+          <!-- Each new train will populate here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+        <form id="new_train_form">
+          <div class="form-group">
+            <label id="train_name" for="formGroupExampleInput">Train Name</label>
+            <input type="text" class="form-control" id="train_name" placeholder="Ex. Amtrak 507">
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2">Destination</label>
+            <input type="text" class="form-control" id="destination" placeholder="Another input">
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput3">First Train Time (HH:mm Military Time)</label>
+            <input type="text" class="form-control" id="first_train" placeholder="Another input">
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput4">Frequency (Minutes)</label>
+            <input type="text" class="form-control" id="frequency" placeholder="Another input">
+          </div> 
+          <button type="submit" class="btn btn-primary" id="add_train">Add Train</button>         
+        </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
   <!-- jQuery Google CDN -->
