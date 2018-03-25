@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+    //Why not add a clock for posterity
+    startTime();
+
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyAQRt_qUP9ZhbrXNUtkC4EemXU8qcz0uVo",
@@ -19,73 +22,150 @@ $(document).ready(function () {
     var firstTrain="";
     var frequency="";
 
-    //HTML
-    //Set up jumbotron for title
-    //Set up table for the train data
-    //Set up form to add a new train
-
-    //JS - on load
-    //We need to pull all info from the database and populate it to the page on page load;
-    //Function will have to dynamically add a row w/ the data
-
-    //JS - on submit click
-    //store all values into a variable and clear all fields.  Prevent default.
-    //feed data to firebase
-    //bring data back and add to table
-
-
-
 
     //Click event
     $("#add_train").on("click", function(e) {
         //prevent page from reloading on click
         e.preventDefault();
         //assign the input value to all the variables
-        name = $("#train_name").val().trim();
+        name=$("#train_name").val().trim();
         destination=$("#destination").val().trim();
         firstTrain=$("#first_train").val().trim();
         frequency=$("#frequency").val().trim();
 
-        //log all the inputs
-        console.log(name);
-        console.log(destination);
-        console.log(firstTrain);
-        console.log(frequency);
+        //If Statement will check to make sure all fields are filled in before submission
+        if ((name != "") && (destination != "") && (firstTrain != "") && (frequency != "")) {
+            //log all the inputs
+            console.log(name);
+            console.log(destination);
+            console.log(firstTrain);
+            console.log(frequency);
 
-        //push all the data to firebase
-        dataRef.ref().push({
-            Train_Name: name,
-            Destination: destination,
-            First_Train: firstTrain,
-            Frequency: frequency
-        })
+            //push all the data to firebase
+            dataRef.ref().push({
+                Train_Name: name,
+                Destination: destination,
+                First_Train: firstTrain,
+                Frequency: frequency
+            })
 
-        //Clear form fields
-        $("#train_name").val("");
-        $("#destination").val("");
-        $("#first_train").val("");
-        $("#frequency").val("");
+            //Clear form fields
+            $("#train_name").val("");
+            $("#destination").val("");
+            $("#first_train").val("");
+            $("#frequency").val("");
+
+            //Return Borders to normal
+            $("#frequency").css({"border": "1px solid #ced4da"});
+            $("#first_train").css({"border": "1px solid #ced4da"});
+            $("#destination").css({"border": "1px solid #ced4da"});
+            $("#train_name").css({"border": "1px solid #ced4da"});
+
+        }
+        //If all fields are empty, change all borders to red
+        else if ((name == "Please select") && (destination == "") && (firstTrain == "") && (frequency == "")) {
+            $("#frequency").css({"border": "2px solid red"});
+            $("#first_train").css({"border": "2px solid red"});
+            $("#destination").css({"border": "2px solid red"});
+            $("#train_name").css({"border": "2px solid red"});
+        }
+        //If name field is empty, change to red
+        else if (name == "Please select") {
+            $("#train_name").css({"border": "2px solid red"});
+            if (destination != "") {
+                $("#destination").css({"border": "2px solid green"});
+            }
+            else if (firstTrain != "") {
+                $("#first_train").css({"border": "2px solid green"});
+            }
+        }
+        //If name field passes, check destination and change name to green
+        else if (destination == "") {
+            $("#destination").css({"border": "2px solid red"});
+            $("#train_name").css({"border": "2px solid green"});
+        }
+        //If destination passes, check firstTrain field and change name/destination to green
+        else if (firstTrain == "") {
+            $("#first_train").css({"border": "2px solid red"});
+            $("#destination").css({"border": "2px solid green"});
+            $("#train_name").css({"border": "2px solid green"});
+        }
+        //If top 3 fields pass, check frequency field and change other 3 to green
+        else if (frequency == "") {
+            $("#frequency").css({"border": "2px solid red"});
+            $("#first_train").css({"border": "2px solid green"});
+            $("#destination").css({"border": "2px solid green"});
+            $("#train_name").css({"border": "2px solid green"});
+        }
     });
 
     //add a listener for when a new train is added to firebase
     dataRef.ref().on("child_added", function(childSnapshot) {
 
+        //$("#current_time").text(moment().format('LT'));
+
         //Log all the data we pull back from Firebase
-        console.log(childSnapshot.val().name);
-        console.log(childSnapshot.val().destination);
-        console.log(childSnapshot.val().firstTrain);
-        console.log(childSnapshot.val().frequency);
+        console.log(childSnapshot.val().Train_Name);
+        console.log(childSnapshot.val().Destination);
+        console.log(childSnapshot.val().First_Train);
+        console.log(childSnapshot.val().Frequency);
+
+        //Calculate the 'Next Arrival' and 'Minutes Away' fields
+            //What do we know?
+        //1. Train comes every x minutes
+        var tFrequency = childSnapshot.val().Frequency;
+        console.log(tFrequency);
+        //2. First train is at hh:mm
+        var firstTime = childSnapshot.val().First_Train;
+        console.log(firstTime);
+        //3. Current Time
+        var currentTime = moment();
+        console.log(currentTime);
+        //Now we have to convert the first train time
+        var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+        console.log(firstTimeConverted);
+        //Now we get the difference between now and the converted time of the first arrival
+        var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+        console.log(diffTime);
+        //Then get time apart (remainder)
+        var tRemainder = diffTime % tFrequency;
+        console.log(tRemainder);
+        //Calculate the minutes until the train
+        var tMinutesTillTrain = tFrequency - tRemainder;
+        console.log(tMinutesTillTrain);
+        //Calculate when the next train will arrive
+        var nextTrainUnformatted = moment().add(tMinutesTillTrain, "minutes");
+        console.log(nextTrainUnformatted);
+        var nextTrain = moment(nextTrainUnformatted.format("HH:mm"));
+        console.log(nextTrain._i);
+
+
 
         //Add all this new data to the table
-        $("#train_list").append("<tr><td>" + childSnapshot.val().Train_Name + "</td><td>" + childSnapshot.val().Destination + "</td><td>" + childSnapshot.val().Frequency + "</td><td>TBD</td><td>TBD</td>");
+        $("#train_list").append("<tr><td>" + childSnapshot.val().Train_Name + "</td><td>" + childSnapshot.val().Destination + "</td><td>" + childSnapshot.val().Frequency + "</td><td>" + nextTrain._i + "</td><td>" + tMinutesTillTrain + "</td>");
 
         // Handle the errors
     }, function(errorObject) {
         console.log("Errors handled: " + errorObject.code);
     });
 
-
-
+    //Clock Function
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        $('#current_time').text(h + ":" + m + ":" + s);
+        var t = setTimeout(startTime, 500);
+    }
+    // This checker will just add a zero in front of numbers < 10
+    function checkTime(i) {
+        if (i < 10) {i = "0" + i};  
+        return i;
+    }
+    
 
 
 });

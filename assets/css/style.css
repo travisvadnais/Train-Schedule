@@ -1,30 +1,42 @@
 
-
-/* table formatting */
 table, form {
     border: 2px double grey;
 }
 
 form {
-    margin-bottom: 100px;
+    background: lightblue;
+}
+
+h4.form_header {
+    margin-top: 10px;
+    text-align: center;
+    background: lightblue;
+    color: black;
 }
 
 th, tr td {
     text-align: center;
 }
 
+select:focus option.holder {
+    display: none;
+  }
+
 #train_name, #destination, #first_train, #frequency, label {
     width: 96%;
     margin-left: 2%;
 }
 
-label#train_name {
-    margin-top: 20px;
-}
-
 button#add_train {
     margin-left: 2%;
     margin-bottom: 20px;
+}
+
+#current_time {
+    text-align: center;
+    font-weight: 900;
+    padding-top: 50px;
+    font-size: 3em;
 }
 
 
