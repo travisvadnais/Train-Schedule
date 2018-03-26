@@ -21,6 +21,7 @@ $(document).ready(function () {
     var destination="";
     var firstTrain="";
     var frequency="";
+    var state="";
 
 
     //Click event
@@ -30,6 +31,11 @@ $(document).ready(function () {
         //assign the input value to all the variables
         name=$("#train_name").val().trim();
         destination=$("#destination").val().trim();
+        //Clean up the formatting of the Destination w/ formatInput formula (bottom of page)
+        destination=formatInput(destination);
+        state=$("#state").val().trim();
+        //Convert state to uppercase
+        state=state.toUpperCase();
         firstTrain=$("#first_train").val().trim();
         frequency=$("#frequency").val().trim();
 
@@ -45,6 +51,7 @@ $(document).ready(function () {
             dataRef.ref().push({
                 Train_Name: name,
                 Destination: destination,
+                State: state,
                 First_Train: firstTrain,
                 Frequency: frequency
             })
@@ -54,12 +61,14 @@ $(document).ready(function () {
             $("#destination").val("");
             $("#first_train").val("");
             $("#frequency").val("");
+            $("#state").val("");
 
             //Return Borders to normal
             $("#frequency").css({"border": "1px solid #ced4da"});
             $("#first_train").css({"border": "1px solid #ced4da"});
             $("#destination").css({"border": "1px solid #ced4da"});
             $("#train_name").css({"border": "1px solid #ced4da"});
+            $("#state").css({"border": "1px solid #ced4da"});
 
         }
         //If all fields are empty, change all borders to red
@@ -139,10 +148,8 @@ $(document).ready(function () {
         var nextTrain = moment(nextTrainUnformatted.format("HH:mm"));
         console.log(nextTrain._i);
 
-
-
         //Add all this new data to the table
-        $("#train_list").append("<tr><td>" + childSnapshot.val().Train_Name + "</td><td>" + childSnapshot.val().Destination + "</td><td>" + childSnapshot.val().Frequency + "</td><td>" + nextTrain._i + "</td><td>" + tMinutesTillTrain + "</td>");
+        $("#train_list").append("<tr><td>" + childSnapshot.val().Train_Name + "</td><td>" + childSnapshot.val().Destination + ", " + childSnapshot.val().State + "</td><td>" + childSnapshot.val().Frequency + "</td><td>" + nextTrain._i + "</td><td>" + tMinutesTillTrain + "</td>");
 
         // Handle the errors
     }, function(errorObject) {
@@ -164,6 +171,13 @@ $(document).ready(function () {
     function checkTime(i) {
         if (i < 10) {i = "0" + i};  
         return i;
+    }
+
+    //This function formats the user's input and capitalizes the first letter of each word
+    function formatInput(destination) {
+        return destination.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
     }
     
 

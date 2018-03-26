@@ -42,7 +42,7 @@
         <form id="new_train_form">
           <h4 class="form_header">New Train Form</h4>
           <div class="row">
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-5 name_div">
               <label for="formGroupExampleInput" id="buffer">Train Name</label>
               <select class="form-control" id="train_name" placeholder="Ex. Amtrak 507">
                 <option selected="selected" class="holder">Please select</option>
@@ -56,17 +56,21 @@
                 <option value="CPR">Canadian Pacific Railway</option>
               </select>
             </div>
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-3 offset-sm-1 destination_div">
               <label for="formGroupExampleInput2">Destination</label>
-              <input type="text" class="form-control" id="destination" placeholder="Ex. Philadelphia, PA">
+              <input type="text" class="form-control" id="destination" placeholder="Ex. Philadelphia">
+            </div>
+            <div class="form-group col-sm-2 state_div">
+              <label for="formGroupExampleInput2">State</label>
+              <input type="text" class="form-control" id="state" placeholder="Ex. PA">
             </div>
           </div>
           <div class="row">
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-5 first_train_div">
               <label for="formGroupExampleInput3">First Train Time (HH:mm)</label>
               <input type="text" class="form-control" id="first_train" placeholder="Ex. 08:00">
             </div>
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-5 offset-sm-1">
               <label for="formGroupExampleInput4">Frequency (Minutes)</label>
               <input type="number" min="1" max="60" class="form-control" id="frequency" placeholder="Choose Number">
             </div>
@@ -74,31 +78,27 @@
           <button type="submit" class="btn btn-primary" id="add_train">Add Train</button>         
         </form>
       </div>
-      <div class="col-sm-4">
-        <h3 style="text-align: center">Current Time is: </h3>
+      <div class="col-sm-4 time_holder">
+        <h3 id="clock_header" style="text-align: center">Current Time is: </h3>
         <h1 id="current_time"></h1>
       </div>
     </div>
   </div>
 
   <!-- This is the train schedule -->
-  <div class="container">
-    <div class="row">
-      <div class="col">
-
-        <div id="current_time"></div>
-      </div>
-    </div>
-  </div>
-  <div class="container">
+  <div class="container train_well">
     <div class="row">
       <div class="col table-responsive-sm">
         <table class="table table-striped table-hover table-sm">
-          <thead class="thead-light">
-            <tr>
-              <th id="train_schedule">Train Schedule</th>
-            </tr>
-          </thead>
+              <thead class="thead-light">
+                <tr>
+                  <th class="well_header" scope="col-sm-12" id="train_schedule">Train Schedule</th>
+                  <th class="well_header" scope="col"></th>
+                  <th class="well_header" scope="col"></th>
+                  <th class="well_header" scope="col"></th>
+                  <th class="well_header" scope="col"></th>
+                </tr>
+              </thead>
           <thead>
             <tr>
               <th scope="col">Train Name</th>
@@ -115,6 +115,7 @@
       </div>
     </div>
   </div>
+
 
 
 

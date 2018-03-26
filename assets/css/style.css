@@ -1,6 +1,21 @@
+body {
+    box-sizing: border-box;
+}
 
+.jumbotron {
+    margin-left: 10px;
+    margin-top: 10px;
+}
 table, form {
     border: 2px double grey;
+}
+
+table {
+    margin-left: 8px;
+}
+
+.table-responsive-sm {
+    margin-bottom: 100px;
 }
 
 form {
@@ -18,9 +33,13 @@ th, tr td {
     text-align: center;
 }
 
+.name_div, .first_train_div, button#add_train {
+    margin-left: 4%;
+}
+
 select:focus option.holder {
     display: none;
-  }
+}
 
 #train_name, #destination, #first_train, #frequency, label {
     width: 96%;
@@ -28,8 +47,9 @@ select:focus option.holder {
 }
 
 button#add_train {
-    margin-left: 2%;
     margin-bottom: 20px;
+    margin-top: 10px;
+    margin-left: 5%;
 }
 
 #current_time {
@@ -37,6 +57,28 @@ button#add_train {
     font-weight: 900;
     padding-top: 50px;
     font-size: 3em;
+}
+
+.time_holder {
+    border: 2px double grey;
+    background: lightblue;
+}
+
+#clock_header {
+    margin-top: 10px;
+}
+
+.train_well {
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 520px) {
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    .time_holder {
+        margin-top: 10px;
+    }
 }
 
 
