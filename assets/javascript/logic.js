@@ -28,6 +28,7 @@ $(document).ready(function () {
 
     //Click event
     $("#add_train").on("click", function(e) {
+        userInputsArray=[];
         //prevent page from reloading on click
         e.preventDefault();
         //assign the input value to all the variables
@@ -47,10 +48,10 @@ $(document).ready(function () {
         //If Statement will check to make sure all fields are filled in before submission
         if ((name != "") && (destination != "") && (firstTrain != "") && (state != "") && (frequency != "")) {
             //log all the inputs
-            console.log(name);
-            console.log(destination);
-            console.log(firstTrain);
-            console.log(frequency);
+            // console.log(name);
+            // console.log(destination);
+            // console.log(firstTrain);
+            // console.log(frequency);
 
             //push all the data to firebase
             dataRef.ref().push({
@@ -102,49 +103,47 @@ $(document).ready(function () {
     //add a listener for when a new train is added to firebase
     dataRef.ref().on("child_added", function(childSnapshot) {
 
-        //$("#current_time").text(moment().format('LT'));
-
         //Log all the data we pull back from Firebase
-        console.log(childSnapshot.val().Train_Name);
-        console.log(childSnapshot.val().Destination);
-        console.log(childSnapshot.val().First_Train);
-        console.log(childSnapshot.val().Frequency);
+        // console.log(childSnapshot.val().Train_Name);
+        // console.log(childSnapshot.val().Destination);
+        // console.log(childSnapshot.val().First_Train);
+        // console.log(childSnapshot.val().Frequency);
 
         //Calculate the 'Next Arrival' and 'Minutes Away' fields
             //What do we know?
         //1. Train comes every x minutes
         var tFrequency = childSnapshot.val().Frequency;
-        console.log(tFrequency);
+        // console.log(tFrequency);
         //2. First train is at hh:mm
         var firstTime = childSnapshot.val().First_Train;
-        console.log(firstTime);
+        // console.log(firstTime);
         //3. Current Time
         var currentTime = moment();
-        console.log(currentTime);
+        // console.log(currentTime);
         //Now we have to convert the first train time
         var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
-        console.log(firstTimeConverted);
+        // console.log(firstTimeConverted);
         //Now we get the difference between now and the converted time of the first arrival
         var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-        console.log(diffTime);
+        // console.log(diffTime);
         //Then get time apart (remainder)
         var tRemainder = diffTime % tFrequency;
-        console.log(tRemainder);
+        // console.log(tRemainder);
         //Calculate the minutes until the train
         var tMinutesTillTrain = tFrequency - tRemainder;
-        console.log(tMinutesTillTrain);
+        // console.log(tMinutesTillTrain);
         //Calculate when the next train will arrive
         var nextTrainUnformatted = moment().add(tMinutesTillTrain, "minutes");
-        console.log(nextTrainUnformatted);
+        // console.log(nextTrainUnformatted);
         var nextTrain = moment(nextTrainUnformatted.format("HH:mm"));
-        console.log(nextTrain._i);
+        // console.log(nextTrain._i);
 
         //Add all this new data to the table
         $("#train_list").append("<tr><td>" + childSnapshot.val().Train_Name + "</td><td>" + childSnapshot.val().Destination + ", " + childSnapshot.val().State + "</td><td>" + childSnapshot.val().Frequency + "</td><td>" + nextTrain._i + "</td><td>" + tMinutesTillTrain + "</td>");
 
         // Handle the errors
     }, function(errorObject) {
-        console.log("Errors handled: " + errorObject.code);
+        // console.log("Errors handled: " + errorObject.code);
     });
 
     //Clock Function

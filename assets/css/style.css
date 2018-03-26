@@ -91,6 +91,9 @@ button#add_train {
         width: 90%;
         margin: 0 auto;
     }
+    .train_well {
+        padding-left: 0px;
+    }
 }
 
 
