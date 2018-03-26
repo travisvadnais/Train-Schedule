@@ -22,7 +22,9 @@ $(document).ready(function () {
     var firstTrain="";
     var frequency="";
     var state="";
-
+    //This is going to be used for form validation
+    var userInputsArray=[];
+    var formErrorArray=[$("#train_name"), $("#destination"), $("#state_name"), $("#first_train"), $("#frequency")];
 
     //Click event
     $("#add_train").on("click", function(e) {
@@ -30,17 +32,20 @@ $(document).ready(function () {
         e.preventDefault();
         //assign the input value to all the variables
         name=$("#train_name").val().trim();
+        userInputsArray.push(name);
         destination=$("#destination").val().trim();
         //Clean up the formatting of the Destination w/ formatInput formula (bottom of page)
         destination=formatInput(destination);
+        userInputsArray.push(destination);
         state=$("#state_name").val().trim();
-        //Convert state to uppercase
-        state=state.toUpperCase();
+        userInputsArray.push(state);
         firstTrain=$("#first_train").val().trim();
+        userInputsArray.push(firstTrain);
         frequency=$("#frequency").val().trim();
+        userInputsArray.push(frequency);
 
         //If Statement will check to make sure all fields are filled in before submission
-        if ((name != "") && (destination != "") && (firstTrain != "") && (frequency != "")) {
+        if ((name != "") && (destination != "") && (firstTrain != "") && (state != "") && (frequency != "")) {
             //log all the inputs
             console.log(name);
             console.log(destination);
@@ -69,44 +74,29 @@ $(document).ready(function () {
             $("#destination").css({"border": "2px solid #ced4da"});
             $("#train_name").css({"border": "2px solid #ced4da"});
             $("#state_name").css({"border": "2px solid #ced4da"});
+            //Return header to normal text
+            $(".form_header").text("New Train Form").css({"color": "black", "font-weight":"500"});
 
         }
         //If all fields are empty, change all borders to red
-        else if ((name == "Please select") && (destination == "") && (state == "--") && (firstTrain == "") && (frequency == "")) {
+        else if ((name == "") && (destination == "") && (state == "") && (firstTrain == "") && (frequency == "")) {
             $("#frequency").css({"border": "2px solid red"});
             $("#first_train").css({"border": "2px solid red"});
             $("#destination").css({"border": "2px solid red"});
             $("#state_name").css({"border": "2px solid red"});
             $("#train_name").css({"border": "2px solid red"});
         }
-        //If name field is empty, change to red
-        else if (name == "Please select") {
-            $("#train_name").css({"border": "2px solid red"});
-            if (destination != "") {
-                $("#destination").css({"border": "2px solid green"});
+        else {
+            for (var i = 0; i < userInputsArray.length; i++) {
+                if (userInputsArray[i] == "") {
+                    formErrorArray[i].css({"border": "2px solid red"});
+                }
+                else {
+                    formErrorArray[i].css({"border": "2px solid green"});
+                }
+                $(".form_header").text("Please fix the red fields below and resubmit").css({"color": "red", "font-weight": "bolder"});
             }
-            else if (firstTrain != "") {
-                $("#first_train").css({"border": "2px solid green"});
-            }
-        }
-        //If name field passes, check destination and change name to green
-        else if (destination == "") {
-            $("#destination").css({"border": "2px solid red"});
-            $("#train_name").css({"border": "2px solid green"});
-        }
-        //If destination passes, check firstTrain field and change name/destination to green
-        else if (firstTrain == "") {
-            $("#first_train").css({"border": "2px solid red"});
-            $("#destination").css({"border": "2px solid green"});
-            $("#train_name").css({"border": "2px solid green"});
-        }
-        //If top 3 fields pass, check frequency field and change other 3 to green
-        else if (frequency == "") {
-            $("#frequency").css({"border": "2px solid red"});
-            $("#first_train").css({"border": "2px solid green"});
-            $("#destination").css({"border": "2px solid green"});
-            $("#train_name").css({"border": "2px solid green"});
-        }
+        }       
     });
 
     //add a listener for when a new train is added to firebase
