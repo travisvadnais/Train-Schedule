@@ -33,7 +33,7 @@ $(document).ready(function () {
         destination=$("#destination").val().trim();
         //Clean up the formatting of the Destination w/ formatInput formula (bottom of page)
         destination=formatInput(destination);
-        state=$("#state").val().trim();
+        state=$("#state_name").val().trim();
         //Convert state to uppercase
         state=state.toUpperCase();
         firstTrain=$("#first_train").val().trim();
@@ -61,21 +61,22 @@ $(document).ready(function () {
             $("#destination").val("");
             $("#first_train").val("");
             $("#frequency").val("");
-            $("#state").val("");
+            $("#state_name").val("");
 
             //Return Borders to normal
-            $("#frequency").css({"border": "1px solid #ced4da"});
-            $("#first_train").css({"border": "1px solid #ced4da"});
-            $("#destination").css({"border": "1px solid #ced4da"});
-            $("#train_name").css({"border": "1px solid #ced4da"});
-            $("#state").css({"border": "1px solid #ced4da"});
+            $("#frequency").css({"border": "2px solid #ced4da"});
+            $("#first_train").css({"border": "2px solid #ced4da"});
+            $("#destination").css({"border": "2px solid #ced4da"});
+            $("#train_name").css({"border": "2px solid #ced4da"});
+            $("#state_name").css({"border": "2px solid #ced4da"});
 
         }
         //If all fields are empty, change all borders to red
-        else if ((name == "Please select") && (destination == "") && (firstTrain == "") && (frequency == "")) {
+        else if ((name == "Please select") && (destination == "") && (state == "--") && (firstTrain == "") && (frequency == "")) {
             $("#frequency").css({"border": "2px solid red"});
             $("#first_train").css({"border": "2px solid red"});
             $("#destination").css({"border": "2px solid red"});
+            $("#state_name").css({"border": "2px solid red"});
             $("#train_name").css({"border": "2px solid red"});
         }
         //If name field is empty, change to red
@@ -178,8 +179,7 @@ $(document).ready(function () {
         return destination.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
-    }
-    
+    }   
 
 
 });

@@ -27,6 +27,7 @@ h4.form_header {
     text-align: center;
     background: lightblue;
     color: black;
+    padding-bottom: 10px;
 }
 
 th, tr td {
@@ -44,6 +45,10 @@ select:focus option.holder {
 #train_name, #destination, #first_train, #frequency, label {
     width: 96%;
     margin-left: 2%;
+}
+
+label {
+    font-weight: bold;
 }
 
 button#add_train {
@@ -78,6 +83,13 @@ button#add_train {
     }
     .time_holder {
         margin-top: 10px;
+    }
+    input#first_train, select#train_name {
+        margin-left: 0px;
+    }
+    select#state_name, input#destination, input#frequency {
+        width: 90%;
+        margin: 0 auto;
     }
 }
 
